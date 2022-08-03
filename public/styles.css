@@ -35,16 +35,18 @@
     ==============
 */
 .token {
-    width: 60px;
     position: absolute;
-    right: 6px;
-    bottom: 6px;
     border: 3px solid rgba(255, 255, 255, 0);
+}
+
+.token--medium {
+    width: 70px;
+    right: 0px;
+    bottom: 0px;
 }
 
 .token--large {
     width: 140px;
-    position: absolute;
     right: 5px;
     bottom: 5px;
 }

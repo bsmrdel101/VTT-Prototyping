@@ -2,6 +2,8 @@ let gridSize = 20;
 let x = 0; 
 let y = 0;
 let selected = false;
+let cells = [];
+let tokenDeltaX, tokenDeltaY;
 
 
 // Waits until the DOM is loaded
@@ -33,6 +35,9 @@ function setupGrid() {
                 newCell.appendChild(draggable);
                 newCell.classList.remove('grid__cell--empty')
             });
+            
+            // Add cell to cells array
+            cells.push(newCell);
         }
         y++;
     }
@@ -47,6 +52,7 @@ function selectCell(e) {
 function addToken(cell, size, image) {
     cell.classList.remove('grid__cell--empty');
     // Add token
+    // TODO: make object constructor and class for token
     const token = cell.appendChild(document.createElement('img'));
     token.setAttribute('src', image);
     token.classList.add('token');
@@ -80,10 +86,26 @@ function addToken(cell, size, image) {
     token.addEventListener('wheel', (e) => {
         if (selected) {
             document.querySelector('.grid-container').classList.add('grid-container--no-scroll');
-            if (e.wheelDeltaY < 0)
-                upscaleToken(token);
-            else
+            if (e.wheelDeltaY < 0) {
+                // Scale up token
+                if (cell.getAttribute('x') > 0) {
+                    upscaleToken(token);
+                } else {
+                    if (token.classList.contains('token--medium')) {
+                        tokenDeltaX = 1;
+                        tokenDeltaY = 1;
+                    } else if (token.classList.contains('token--large')) {
+                        tokenDeltaX = 2;
+                        tokenDeltaY = 2;
+                    }
+
+                    const selectedCell = findCell(parseInt(cell.getAttribute('x')) + tokenDeltaX, parseInt(cell.getAttribute('y')) + tokenDeltaY);
+                    console.log(selectedCell);
+                }
+            } else {
+                // Scale down token
                 descaleToken(token);
+            }
         }
     });
 }
@@ -110,5 +132,14 @@ function descaleToken(token) {
     if (token.classList.contains('token--large')) {
         token.classList.remove('token--large');
         token.classList.add('token--medium');
+    }
+}
+
+// Will find and return a cell with the parameters given
+function findCell(x, y) {
+    for (const cell of cells) {
+        if (cell.getAttribute('x') === x.toString() && cell.getAttribute('y') === y.toString()) {
+            return cell;
+        }
     }
 }

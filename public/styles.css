@@ -1,0 +1,19 @@
+/* 
+    ============
+        GRID
+    ============
+*/
+.grid-container {
+    overflow-y: auto;
+    width: 80%;
+    height: 90vh;
+}
+
+#grid {
+    border-collapse: collapse;
+}
+
+.grid__cell {
+    border: 1px solid black;
+    padding: 30px;
+}

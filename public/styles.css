@@ -15,5 +15,26 @@
 
 .grid__cell {
     border: 1px solid black;
-    padding: 30px;
+    padding-top: 4px;
+    padding-left: 1.5px;
+    text-align: center;
 }
+
+.grid__cell--empty {
+    padding: 2.2rem 2.2rem;
+}
+
+/* 
+    ==============
+        TOKENS
+    ==============
+*/
+.token {
+    width: 60px;
+}
+
+.token--dragging {
+    opacity: 60%;
+    cursor: grabbing;
+}
+

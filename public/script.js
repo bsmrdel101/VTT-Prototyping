@@ -78,18 +78,12 @@ function addToken(cell, size, image) {
         }
     });
     token.addEventListener('wheel', (e) => {
-        // Only continue if a token is selected
-        if (!selected) return;
-        
-        if (e.target.classList.contains('token')) {
-            console.log('no scroll');
-            disableScrolling();
-            if (e.wheelDeltaY >= 0)
+        if (selected) {
+            document.querySelector('.grid-container').classList.add('grid-container--no-scroll');
+            if (e.wheelDeltaY < 0)
                 upscaleToken(token);
             else
                 descaleToken(token);
-        } else {
-            enableScrolling();
         }
     });
 }
@@ -98,6 +92,7 @@ function selectToken(token) {
     if (selected) {
         token.classList.remove('token--selected');
         selected = false;
+        document.querySelector('.grid-container').classList.remove('grid-container--no-scroll');
     } else {
         token.classList.add('token--selected');
         selected = true;
@@ -116,16 +111,4 @@ function descaleToken(token) {
         token.classList.remove('token--large');
         token.classList.add('token--medium');
     }
-}
-
-function disableScrolling() {
-    const container = document.querySelector('.token');
-    let x = container.scrollX;
-    let y = container.scrollY;
-    container.onscroll = () => container.scrollTo(x, y);
-}
-
-function enableScrolling() {
-    const container = document.querySelector('.token');
-    container.onscroll = () => {};
 }

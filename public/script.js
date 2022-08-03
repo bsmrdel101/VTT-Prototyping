@@ -1,13 +1,8 @@
 let gridSize = 20;
 let x = 0; 
 let y = 0;
+let selected = false;
 
-  
-document.addEventListener('mousedown',(e) => {
-    if (e.which === 3) {
-        console.log('delete');
-    }
-});
 
 // Waits until the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function setupGrid() {
+    document.getElementById('grid').addEventListener("contextmenu", e => e.preventDefault());
     for (let a = 0; a < gridSize; a++) {
         // Create row
         let newRow = document.getElementById('grid').appendChild(document.createElement('tr'));
@@ -44,16 +40,17 @@ function setupGrid() {
 
 function selectCell(e) {
     if (e.target.classList.contains('grid__cell--empty')) {
-        addToken(e.target, 'https://i.pinimg.com/236x/88/4a/05/884a056ba7a5a004becacbfd1bfd78fe.jpg');
+        addToken(e.target, 'token--medium', 'https://i.pinimg.com/236x/88/4a/05/884a056ba7a5a004becacbfd1bfd78fe.jpg');
     } 
 }
 
-function addToken(cell, image) {
+function addToken(cell, size, image) {
     cell.classList.remove('grid__cell--empty');
     // Add token
     const token = cell.appendChild(document.createElement('img'));
     token.setAttribute('src', image);
     token.classList.add('token');
+    token.classList.add(size);
 
     // Add event listeners
     token.addEventListener("dragstart", (e) => {
@@ -62,4 +59,73 @@ function addToken(cell, image) {
     token.addEventListener("dragend", (e) => {
         e.target.classList.remove('token--dragging');
     });
+    token.addEventListener('mousedown',(e) => {
+        switch (e.which) {
+            case 3:
+                console.log('delete');
+                break;
+            default:
+                break;
+        }
+    });
+    token.addEventListener('mouseup',(e) => {
+        switch (e.which) {
+            case 1:
+                selectToken(e.target);
+                break;
+            default:
+                break;
+        }
+    });
+    token.addEventListener('wheel', (e) => {
+        // Only continue if a token is selected
+        if (!selected) return;
+        
+        if (e.target.classList.contains('token')) {
+            console.log('no scroll');
+            disableScrolling();
+            if (e.wheelDeltaY >= 0)
+                upscaleToken(token);
+            else
+                descaleToken(token);
+        } else {
+            enableScrolling();
+        }
+    });
+}
+
+function selectToken(token) {
+    if (selected) {
+        token.classList.remove('token--selected');
+        selected = false;
+    } else {
+        token.classList.add('token--selected');
+        selected = true;
+    }
+}
+
+function upscaleToken(token) {
+    if (token.classList.contains('token--medium')) {
+        token.classList.remove('token--medium');
+        token.classList.add('token--large');
+    }
+}
+
+function descaleToken(token) {
+    if (token.classList.contains('token--large')) {
+        token.classList.remove('token--large');
+        token.classList.add('token--medium');
+    }
+}
+
+function disableScrolling() {
+    const container = document.querySelector('.token');
+    let x = container.scrollX;
+    let y = container.scrollY;
+    container.onscroll = () => container.scrollTo(x, y);
+}
+
+function enableScrolling() {
+    const container = document.querySelector('.token');
+    container.onscroll = () => {};
 }

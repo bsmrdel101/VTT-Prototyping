@@ -18,10 +18,11 @@
     padding-top: 4px;
     padding-left: 1.5px;
     text-align: center;
+    position: relative;
 }
 
 .grid__cell--empty {
-    padding: 2.2rem 2.2rem;
+    padding: 2.4rem;
 }
 
 /* 
@@ -31,6 +32,17 @@
 */
 .token {
     width: 60px;
+    /* border-radius: 50%; */ /* Make token a circle shape */ 
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.token--large {
+    width: 120px;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
 }
 
 .token--dragging {
@@ -38,3 +50,7 @@
     cursor: grabbing;
 }
 
+.token--selected {
+    border: 3px solid blue;
+    border-radius: 50%;
+}

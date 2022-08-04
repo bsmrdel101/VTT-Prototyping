@@ -9,11 +9,54 @@
     height: 90vh;
 }
 
+.grid-container--no-scroll {
+    overflow: hidden;
+}
+
 #grid {
     border-collapse: collapse;
 }
 
 .grid__cell {
     border: 1px solid black;
-    padding: 30px;
+    padding-top: 4px;
+    padding-left: 1.5px;
+    text-align: center;
+    position: relative;
+}
+
+.grid__cell--empty {
+    padding: 2.4rem;
+}
+
+/* 
+    ==============
+        TOKENS
+    ==============
+*/
+.token {
+    position: absolute;
+    border: 3px solid rgba(255, 255, 255, 0);
+}
+
+.token--medium {
+    width: 70px;
+    right: 0px;
+    bottom: 0px;
+}
+
+.token--large {
+    width: 140px;
+    right: 5px;
+    bottom: 5px;
+}
+
+.token--dragging {
+    opacity: 60%;
+    cursor: grabbing;
+}
+
+.token--selected {
+    border: 3px solid blue;
+    border-radius: 50%;
 }

@@ -88,9 +88,10 @@ function addToken(cell, size, image) {
             document.querySelector('.grid-container').classList.add('grid-container--no-scroll');
             if (e.wheelDeltaY < 0) {
                 // Scale up token
-                if (cell.getAttribute('x') > 0) {
+                if (cell.getAttribute('x') > 0 && cell.getAttribute('y') > 0) {
                     upscaleToken(token);
                 } else {
+                    // Determine how far the token has to move
                     if (token.classList.contains('token--medium')) {
                         tokenDeltaX = 1;
                         tokenDeltaY = 1;
@@ -99,8 +100,12 @@ function addToken(cell, size, image) {
                         tokenDeltaY = 2;
                     }
 
+                    // Move the token into the grid
                     const selectedCell = findCell(parseInt(cell.getAttribute('x')) + tokenDeltaX, parseInt(cell.getAttribute('y')) + tokenDeltaY);
-                    console.log(selectedCell);
+                    cell.classList.add('grid__cell--empty');
+                    selectedCell.classList.remove('grid__cell--empty');
+                    selectedCell.appendChild(token);
+                    upscaleToken(token);
                 }
             } else {
                 // Scale down token
